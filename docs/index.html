@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/night.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/zenburn.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# React Native
+#### A beginner's adventure
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Overview
+
+- What is mobile app development? <!-- .element: class="fragment" -->
+- Cross-platform development? <!-- .element: class="fragment" -->
+- React Native! <!-- .element: class="fragment" -->
+- Further reading <!-- .element: class="fragment" -->
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Frikkie Snyman
+
+<img src="Files/White Circle Profile Photo Instagram Post.png" alt="" style="width: 450px; object-fit: fill">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Frikkie Snyman
+<split left="2" right="1" gap="2">
+
+- At **Relive** since 2018
+
+<img src="Files/White Circle Profile Photo Instagram Post.png" alt="" style="width: 250px; object-fit: fill">
+
+</split>
+
+
+<div class="" style="position: absolute; left: 0%; top: 100%; height: 15%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end" align="bottom">
+
+<i class="fab fa-linkedin" ></i>
+
+###### linkedin.com/in/frikkiesnyman
+</div>
+
+<div class="" style="position: absolute; left: 50%; top: 100%; height: 15%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end" align="bottom">
+
+<i class="fab fa-twitter" ></i>
+
+###### @die_frikkie
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Frikkie Snyman
+<split left="2" right="1" gap="2">
+
+- At **Relive** since 2018
+- Full Stack engineer
+
+<img src="Files/White Circle Profile Photo Instagram Post.png" alt="" style="width: 250px; object-fit: fill">
+
+</split>
+
+<div class="" style="position: absolute; left: 0%; top: 100%; height: 15%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end" align="bottom">
+
+<i class="fab fa-linkedin" ></i>
+
+###### linkedin.com/in/frikkiesnyman
+</div>
+
+<div class="" style="position: absolute; left: 50%; top: 100%; height: 15%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end" align="bottom">
+
+<i class="fas fa-times" ></i>
+
+###### @die_frikkie
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Frikkie Snyman
+<split left="2" right="1" gap="2">
+
+- At **Relive** since 2018
+- ~~Full Stack engineer~~
+- Tech Lead
+
+<img src="Files/White Circle Profile Photo Instagram Post.png" alt="" style="width: 250px; object-fit: fill">
+
+</split>
+<div class="" style="position: absolute; left: 0%; top: 100%; height: 15%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end" align="bottom">
+
+<i class="fab fa-linkedin" ></i>
+
+###### linkedin.com/in/frikkiesnyman
+</div>
+
+<div class="" style="position: absolute; left: 50%; top: 100%; height: 15%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end" align="bottom">
+
+<i class="fab fa-twitter" ></i>
+
+###### @die_frikkie
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Frikkie Snyman
+<split left="2" right="1" gap="2">
+
+- At **Relive** since 2018
+- ~~Full Stack engineer~~
+- ~~Tech Lead~~
+- **Mobile Platform Engineer**
+
+<img src="Files/White Circle Profile Photo Instagram Post.png" alt="" style="width: 250px; object-fit: fill">
+
+</split>
+<div class="" style="position: absolute; left: 0%; top: 100%; height: 15%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end" align="bottom">
+
+<i class="fab fa-linkedin" ></i>
+
+###### linkedin.com/in/frikkiesnyman
+</div>
+
+<div class="" style="position: absolute; left: 50%; top: 100%; height: 15%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end" align="bottom">
+
+<i class="fas fa-times" ></i>
+
+###### @die_frikkie
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Frikkie's side quests
+
+#### Puck
+
+###### puckgame.app
+
+Simple puzzle game using React Native and `react-native-game-engine`.
+
+<img src="https://puckgame.app/images/banner.png" alt="" style="object-fit: scale-down">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Frikkie's side quests
+
+#### Splirrit
+
+###### splirrit.com
+
+Peer-to-peer payment solution using Sveltekit, Supabase, and React Native.
+
+<img src="https://www.splirrit.com/logo/logo-full.svg" alt="" style="object-fit: scale-down">
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Mobile app development
+
+- Creating software that is used on smartphones, tablets, assistants...
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<!-- .slide: data-auto-animate="true" -->
+
+## Mobile app development
+
+- Creating software that is used on smartphones, tablets, assistants...
+
+Frikkie says: <!-- .element: data-id="frikkie" -->
+
+> Creating software that runs on devices without the need of a browser
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<!-- .slide: data-auto-animate="true" -->
+
+## Mobile app development
+
+- Creating software that is used on smartphones, tablets, assistants...
+
+Frikkie (really) says: <!-- .element: data-id="frikkie" -->
+
+> Creating software (**that needs to be reviewed before being ~shipped~ hotfixed**) that runs on (**shitty**) devices ~without the need of a browser~ (**at the protest of those devices' operating systems**).
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Mobile app development
+
+#### Why is this important?
+
+<img src="Files/Screenshot 2023-08-07 at 20.58.12.png" alt="" style="width: 600px; object-fit: fill" class="fragment">
+</div>
+
+<aside class="notes"><p>Let&#39;s first take a look at why we are talking about this.</p>
+<p><em>click</em></p>
+<p>Some recent research done on Android users, show that 92% of their time spent on device is in apps or games - and only 8% of that tinme in a browser.</p>
+<p>Clearly, then, users value a catered experience over a generic web based experience.</p>
+<p>source: <a href="https://www.statista.com/statistics/1294586/global-time-spent-browsers-and-apps/">https://www.statista.com/statistics/1294586/global-time-spent-browsers-and-apps/</a></p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Mobile app development
+
+#### Why is this important?
+
+<img src="Files/Screenshot 2023-08-07 at 21.08.25.png" alt="" style="object-fit: scale-down">
+</div>
+
+<aside class="notes"><p>Conversely, we don&#39;t see this divide matched in the code the code that is being written.</p>
+<p><em>click</em></p>
+<p>If we look at the number of NPM downloads of react-dom compared to react-native over the past 6 months, we find that react-dom is downloaded 12x more than react-native.</p>
+<p>Of course this is a simplified insight, but it serves us well enough as a proxy.</p>
+<p>So there&#39;s a bit of an elephant in the room here...</p>
+<p>source: <a href="https://npmtrends.com/react-dom-vs-react-native">https://npmtrends.com/react-dom-vs-react-native</a></p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Mobile app development
+
+We can create mobile apps:
+
+- Natively <!-- .element: class="fragment" -->
+- Cross-platform <!-- .element: class="fragment" -->
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Native development
+
+#### Android
+
+```java
+package com.facebook.react.animated;
+
+import com.facebook.react.bridge.ReadableMap;
+
+  private static final double MAX_DELTA_TIME_SEC = 0.064;
+
+  private static final double SOLVER_TIMESTEP_SEC = 0.001;
+
+  private static class PhysicsState {
+    double position;
+    double velocity;
+  }
+
+  private long mLastTime;
+  private boolean mSpringStarted;
+
+  // configuration
+  private double mSpringStiffness;
+  private double mSpringDamping;
+  private double mSpringMass;
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Native development
+
+#### iOS
+
+```objective-c
+
+NSString *const RCTAccessibilityManagerDidUpdateMultiplierNotification =
+    @"RCTAccessibilityManagerDidUpdateMultiplierNotification";
+
+@interface RCTAccessibilityManager () <NativeAccessibilityManagerSpec>
+
+@property (nonatomic, copy) NSString *contentSizeCategory;
+@property (nonatomic, assign) CGFloat multiplier;
+
+@end
+
+@implementation RCTAccessibilityManager
+
+@synthesize viewRegistry_DEPRECATED = _viewRegistry_DEPRECATED;
+@synthesize moduleRegistry = _moduleRegistry;
+@synthesize multipliers = _multipliers;
+
+RCT_EXPORT_MODULE()
+
++ (BOOL)requiresMainQueueSetup
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Native development
+
+#### The good parts
+
+- "Performant" <!-- .element: class="fragment" -->
+- Feels "native" <!-- .element: class="fragment" -->
+- Native platform functionality <!-- .element: class="fragment" -->
+</div>
+
+<aside class="notes"><p>Native development has a couple of upsides.</p>
+<p><em>click</em></p>
+<p>Some people like to say that it&#39;s performant. I don&#39;t think this is true - you can write shitty code natively, but you just don&#39;t have a framework to blame for it.</p>
+<p><em>click</em></p>
+<p>And since you are working with native constructs, you end up with an app that &quot;feels&quot; native. Again, this is not something that is unique to writing native code.</p>
+<p><em>click</em></p>
+<p>Lastly, creating native applications has the upside of platform native features being easily available and usable - things like Dynamic Island for example.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Native development
+
+#### The bad parts
+
+- Expensive <!-- .element: class="fragment" -->
+- Duplicate codebases <!-- .element: class="fragment" -->
+- Specialised <!-- .element: class="fragment" -->
+</div>
+
+<aside class="notes"><p><em>click</em></p>
+<p>Off the bat, native apps are simply more expensive to create and maintain. If you want your app on both Android and iOS, you now need at least 2 teams to maintain it.</p>
+<p><em>click</em></p>
+<p>Generally, these apps should have the same functionality across platforms. This means you are very likely to end up with duplicate business logic, which is always a bad idea.</p>
+<p><em>click</em></p>
+<p>Lastly, your engineers that are working on these apps end up being quite nichely skilled - they don&#39;t easily context switch to do fullstack work using some shared technology such as JS (maybe your Java devs can do it - but then, Java backend code is something else)</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Cross-platform 
+- Ionic<!-- .element: class="fragment" -->
+- Cordova<!-- .element: class="fragment" -->
+- Flutter<!-- .element: class="fragment" -->
+- React Native<!-- .element: class="fragment" -->
+</div>
+
+<aside class="notes"><p>On the other hand, we have cross platform development. Some examples here are ionic, cordova, flutter, and of course, React Native.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Cross-Platform
+#### The good parts
+###### (React Native)
+- Cost effective<!-- .element: class="fragment" -->
+- Quick iteration<!-- .element: class="fragment" -->
+- Reusability<!-- .element: class="fragment" -->
+</div>
+
+<aside class="notes"><p>There are a lot of pros and cons to consider when it comes to working with Cross Platform.</p>
+<p><em>click</em></p>
+<p>Most obviously, it&#39;s a much more cost efficient approach. In general, you can get away with one team that develops the same app on multiple platforms.</p>
+<p><em>click</em></p>
+<p>In the same vain, this also allows us to iterate comparatively quickly, with features like hot reloading or OTA updates.</p>
+<p><em>click</em></p>
+<p>Lastly, due to the shared codebase, cross-platform just leans itself toward promoting reusability. Business logic and types live in the same codebase for all platforms, and rendering logic and display components are shared across platforms too!</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Cross-Platform
+#### The bad parts
+- "Performance"<!-- .element: class="fragment" -->
+- Debugging<!-- .element: class="fragment" -->
+- Framework updates<!-- .element: class="fragment" -->
+</div>
+
+<aside class="notes"><p>Of course, there must be down sides too. </p>
+<p><em>click</em></p>
+<p>The first being &quot;performance&quot;. Again, I don&#39;t really agree with this. Probably 95% of apps won&#39;t run into limitations due to performance of the framework (especially talking about React Native).</p>
+<p><em>click</em></p>
+<p>Debugging can be tough though - especially doing things like memory dumps and looking at stack traces for native crashes.</p>
+<p><em>click</em></p>
+<p>Lastly, framework updates can sometimes be a pain - especially with something like React Native that is actively being developed. For example, we&#39;ve had to switch from using JSC to Hermes as Javascript engines.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<!-- .slide: data-background-opacity="0.75" data-background-image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" -->
+## React Native
+</div>
+
+<aside class="notes"><p>This brings me to React Native, the topic of tonight&#39;s talk!</p>
+<p>As you&#39;ll hopefully notice, I&#39;m a bit of a fanboy... But I have good reason.</p>
+<p>And so do others:</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native is...
+<split even gap="2">
+21% of top sports apps
+
+<img src="Files/Screenshot 2023-08-07 at 21.48.58.png" alt="" style="width: 400px; height: 500px; object-fit: fill">
+
+
+</split>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native is...
+
+<split even gap="1">
+24% of top food and drink apps
+
+
+<img src="Files/Screenshot 2023-08-07 at 21.47.51.png" alt="" style="width: 300px; height: 300px; object-fit: fill">
+
+</split>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native is...
+
+<split even gap="2">
+22% of top finance apps
+
+<img src="Files/Screenshot 2023-08-07 at 21.47.26.png" alt="" style="width: 400px; height: 500px; object-fit: fill">
+
+</split>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native is...
+<split even gap="1">
+~25% of top shopping apps
+
+<img src="Files/Screenshot 2023-08-07 at 21.46.55.png" alt="" style="width: 400px; height: 500px; object-fit: fill">
+
+</split>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native is...
+
+<split even gap="2">
+~20% of top Medical apps
+
+<img src="Files/Screenshot 2023-08-07 at 21.46.23.png" alt="" style="width: 400px; height: 500px; object-fit: fill">
+
+</split>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native
+
+Creates native apps for iOS and Android using React.
+
+<img src="Files/Screenshot 2023-08-14 at 20.40.32.png" alt="" style="width: 600px; height: 400px; object-fit: fill">
+</div>
+
+<aside class="notes"><p>React Native is truly native, and it uses native constructs to render the UI. It&#39;s therefor very easy to create an app that feels and behaves native on both Android and iOS.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native
+#### How does it work?
+
+
+<div class="mermaid">
+graph TD
+	A(Native app launch)
+	
+
+</div>
+</div>
+
+<aside class="notes"><p>But how does React Native work?</p>
+<p>Once the app is launched, a Native process is kicked off. It&#39;s important to understand that React Native is an actual native app.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native
+#### How does it work?
+
+
+<div class="mermaid">
+graph TD
+	A(Native app launch) --> B(JS Engine)
+	
+
+</div>
+</div>
+
+<aside class="notes"><p>Once the native process is underway, it launches a Javascript virtual machine, or engine.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native
+#### How does it work?
+
+
+<div class="mermaid">
+graph TD
+	A(Native app launch) --> B(JS Engine)
+	B --> C(JS Bundle)
+	
+
+</div>
+</div>
+
+<aside class="notes"><p>This JS VM is then used to evaluate our javascript bundle - this is bundle is the React code that we&#39;ve written.</p>
+<p>All the top level imports and statements are executed and then finally is our root component mounted.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native
+#### Bridge
+
+<div class="mermaid">
+sequenceDiagram
+    Javascript-->>Native: [parse] Bridge [decode]
+    Native-->>Javascript: [decode] Bridge [parse]
+
+</div>
+</div>
+
+<aside class="notes"><p>Once the JS has taken over, communication between the JS layer and Native layers occur using the so-called bridge.</p>
+<p>The bridge is what allows React Native to employ the use of true native functionality. To simplify it, the bridge essentially stringifies and decodes data between the two layers - which enables communication to take place.</p>
+<p>Now, the bridge is also the part of React Native where we can run into some performance related trouble.</p>
+<p>Since we&#39;re stringifying data, it can get slow if you&#39;re trying parse a massive amount of data. Again - this is not something that you&#39;ll often run into, but it is good to stay aware of it.</p>
+</aside></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React render lifecycle
+#### Or the anatomy of a component
+
+<pre>
+<code data-line-numbers="2-6">function SomeComponent() {
+	return (
+		<View>
+			<Text>Hello world</Text>
+		</View>
+	)
+}
+</code>
+</pre>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React render lifecycle
+###### Adding state
+
+<pre>
+<code data-line-numbers="2,6">function SomeComponent() {
+	const [count, setCount] = useState(0);
+	
+	return (
+		<View>
+			<Text>Counter: {count}</Text>
+		</View>
+	)
+}
+</code>
+</pre>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React render lifecycle
+###### Doing stuff on mount
+
+<pre>
+<code data-line-numbers="4-10">function SomeComponent() {
+	const [count, setCount] = useState(0);
+
+	useEffect(() => {
+
+		setInterval(() => {
+			setCount(count + 1);
+		}, 1000);
+
+	}, []);
+
+	return (
+		<View>
+			<Text>Counter: {count}</Text>
+		</View>
+	)
+}
+</code>
+</pre>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React render lifecycle
+###### Doing stuff on unmount
+
+<pre>
+<code data-line-numbers="6,10-12">function SomeComponent() {
+	const [count, setCount] = useState(0);
+
+	useEffect(() => {
+
+		const interval = setInterval(() => {
+			setCount(count + 1);
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
+
+	}, []);
+
+	return (
+		<View>
+			<Text>Counter: {count}</Text>
+		</View>
+	)
+}
+</code>
+</pre>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native
+
+### Code demo
+
+We'll use:
+- Expo Go <!-- component class="fragment" -->
+- Gluestack <!-- component class="fragment" -->
+- React Navigation  <!-- component class="fragment" -->
+- HackerNews API <!-- component class="fragment" -->
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## React Native
+
+#### Further reading
+- Expo (docs.expo.dev)
+- EAS (expo.dev/eas)
+- React Navigation (reactnavigation.org)
+- Gluestack (ui.gluestack.io)
+- Native Modules (reactnative.dev/docs/native-modules-intro)
+- New Architecture (reactnative.dev/docs/the-new-architecture/landing-page)
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" data-auto-animate="true" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 700px; width: 960px; min-height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Questions?
+
+### Code
+https://github.com/FrikkieSnyman/fedsa-rn-demo
+
+<div class="" style="position: absolute; left: 0%; top: 100%; height: 0%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<i class="fab fa-linkedin" ></i>
+
+###### linkedin.com/in/frikkiesnyman
+</div>
+
+<div class="" style="position: absolute; left: 50%; top: 100%; height: 0%; width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+<i class="fab fa-twitter" ></i>
+
+###### @die_frikkie
+</div>
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"maxScale":1,"controls":true,"progress":false,"slideNumber":false,"transition":"slide","transitionSpeed":"default","mermaid":{"themeVariables":{"fontSize":"32px"},"theme":"dark"}}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
