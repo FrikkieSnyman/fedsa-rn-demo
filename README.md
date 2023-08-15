@@ -17,3 +17,7 @@ Run `yarn start`.
 This will start the Metro bundler. You can then run the app on an emulator or simulator by hitting `a` (for android) or `i`  (for iOS).
 
 Alternatively, you can also run `yarn android` or `yarn ios`.
+
+## Slides
+
+You can view the slides [here](https://frikkiesnyman.github.io/fedsa-rn-demo).
